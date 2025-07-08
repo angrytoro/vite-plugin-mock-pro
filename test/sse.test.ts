@@ -54,4 +54,24 @@ describe('SSE Mocking', () => {
       { count: 2 },
     ]);
   });
+
+  it('should receive custom SSE events', async () => {
+    const customEvents: any[] = [];
+    const es = new EventSource(`http://localhost:${port}/sse/custom`);
+
+    await new Promise<void>((resolve) => {
+      es.addEventListener('custom-event', (e) => {
+        customEvents.push(JSON.parse(e.data));
+        if (customEvents.length >= 2) {
+          es.close();
+          resolve();
+        }
+      });
+    });
+
+    expect(customEvents).toEqual([
+      { foo: 1 },
+      { foo: 2 },
+    ]);
+  });
 });

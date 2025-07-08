@@ -12,4 +12,13 @@ export default {
       },
     },
   },
+  '/sse/custom': {
+    method: 'SSE',
+    stream: {
+      generator: (send) => {
+        send('custom-event', { foo: 1 });
+        setTimeout(() => send('custom-event', { foo: 2 }), 10);
+      },
+    },
+  },
 };
