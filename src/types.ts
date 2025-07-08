@@ -1,5 +1,3 @@
-// src/types.ts
-import type { ServerResponse } from 'http';
 
 /** 发送 SSE 消息的函数类型 */
 export type SseSender = (event: string, data: string | object) => void;

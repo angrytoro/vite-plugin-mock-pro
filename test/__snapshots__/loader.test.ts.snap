@@ -1,8 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`Mock Loader > should match the snapshot of a loaded mock item 1`] = `
-{
-  "method": "GET",
-  "response": [Function],
-}
-`;
