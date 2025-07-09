@@ -38,18 +38,18 @@ pnpm add vite-plugin-mock-pro -D
 
 ### 步骤 1: 配置 Vite
 
-在你的 `vite.config.ts` 文件中，导入并使用 `viteMockPlus()` 插件。
+在你的 `vite.config.ts` 文件中，导入并使用 `viteMockPro()` 插件。
 
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react'; // 以 React 为例
-import { viteMockPlus } from 'vite-plugin-mock-pro';
+import { viteMockPro } from 'vite-plugin-mock-pro';
 
 export default defineConfig({
   plugins: [
     react(),
-    viteMockPlus({
+    viteMockPro({
       // 指定存放 mock 文件的目录
       mockDir: 'mock',
     }),
@@ -215,7 +215,6 @@ function RealTimeLogger() {
 | 选项      | 类型      | 默认值       | 描述                                                               |
 | :-------- | :-------- | :----------- | :----------------------------------------------------------------- |
 | `mockDir` | `string`  | `'mock'`     | 存放 mock 配置文件的目录路径，相对于项目根目录。                   |
-| `enable`  | `boolean` | `true`       | 是否启用插件。你可以用它来在生产构建中自动禁用 mock 功能。         |
 | `fileSuffix` | `string`  | `'.mock'`    | mock文件的后缀名，插件会查找并加载所有以 `[fileSuffix].ts` 或 `[fileSuffix].js` 结尾的文件。 |
 
 **示例：在生产构建中禁用 Mock**
@@ -223,12 +222,12 @@ function RealTimeLogger() {
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
-import { viteMockPlus } from 'vite-plugin-mock-pro';
+import { viteMockPro } from 'vite-plugin-mock-pro';
 
 export default defineConfig(({ command }) => {
   return {
     plugins: [
-      viteMockPlus({
+      viteMockPro({
         mockDir: 'mock',
         // 仅在开发模式 (serve) 下启用
         enable: command === 'serve',

@@ -53,4 +53,9 @@ export interface PluginOptions {
    * @default true
    */
   logger?: boolean;
+  /**
+   * mock 文件后缀名，默认为 '.mock'
+   * @default '.mock'
+   */
+  fileSuffix?: string;
 }

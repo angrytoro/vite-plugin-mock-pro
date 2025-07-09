@@ -5,9 +5,9 @@ import type { MockConfig, MockItem } from './types';
 // 使用 Map 存储，方便快速查找和更新
 export const mockStore = new Map<string, MockItem>();
 
-export async function loadMocks(mockDir: string): Promise<void> {
+export async function loadMocks(mockDir: string, fileSuffix: string = '.mock'): Promise<void> {
   mockStore.clear();
-  const mockFiles = await glob(`${mockDir}/**/*.{ts,js,json}`, {
+  const mockFiles = await glob(`${mockDir}/**/*${fileSuffix}.{ts,js,json}`, {
     ignore: ['**/node_modules/**'],
     absolute: true,
   });

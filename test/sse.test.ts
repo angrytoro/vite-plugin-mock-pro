@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import http from 'http';
 import connect from 'connect';
 import EventSource from 'eventsource';
-import { viteMockPlus } from '../src';
+import { viteMockPro } from '../src';
 import path from 'path';
 
 describe('SSE Mocking', () => {
@@ -11,7 +11,7 @@ describe('SSE Mocking', () => {
 
   beforeAll(async () => {
     const app = connect();
-    const plugin = viteMockPlus({
+    const plugin = viteMockPro({
       mockDir: path.join(__dirname, 'mocks'),
       logger: false,
     });

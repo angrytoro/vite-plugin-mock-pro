@@ -38,18 +38,18 @@ pnpm add vite-plugin-mock-pro -D
 
 ### Step 1: Configure Vite
 
-In your `vite.config.ts`, import and use `viteMockPlus()`.
+In your `vite.config.ts`, import and use `viteMockPro()`.
 
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react'; // Example: React
-import { viteMockPlus } from 'vite-plugin-mock-pro';
+import { viteMockPro } from 'vite-plugin-mock-pro';
 
 export default defineConfig({
   plugins: [
     react(),
-    viteMockPlus({
+    viteMockPro({
       // Directory for mock files
       mockDir: 'mock',
     }),
@@ -215,7 +215,6 @@ The plugin provides several options for customization.
 | Option        | Type      | Default     | Description                                                                 |
 | :------------ | :-------- | :---------- | :-------------------------------------------------------------------------- |
 | `mockDir`     | `string`  | `'mock'`    | Directory for mock config files, relative to project root.                  |
-| `enable`      | `boolean` | `true`      | Whether to enable the plugin. Useful for disabling mocks in production.     |
 | `fileSuffix`  | `string`  | `'.mock'`   | Suffix for mock files. The plugin loads all files ending with this suffix.  |
 
 **Example: Disable Mock in Production**
@@ -223,12 +222,12 @@ The plugin provides several options for customization.
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
-import { viteMockPlus } from 'vite-plugin-mock-pro';
+import { viteMockPro } from 'vite-plugin-mock-pro';
 
 export default defineConfig(({ command }) => {
   return {
     plugins: [
-      viteMockPlus({
+      viteMockPro({
         mockDir: 'mock',
         // Only enable in dev mode
         enable: command === 'serve',

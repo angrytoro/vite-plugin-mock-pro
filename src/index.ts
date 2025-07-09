@@ -7,8 +7,8 @@ import { log } from './utils';
 import path from 'path';
 import type { IncomingMessage, ServerResponse } from 'http';
 
-export function viteMockPlus(options: PluginOptions = {}): Plugin {
-  const { mockDir = 'mock', logger = true } = options;
+export function viteMockPro(options: PluginOptions = {}): Plugin {
+  const { mockDir = 'mock', logger = true, fileSuffix = '.mock' } = options;
   const resolvedMockDir = path.resolve(process.cwd(), mockDir);
 
   return {
@@ -17,7 +17,7 @@ export function viteMockPlus(options: PluginOptions = {}): Plugin {
     // 核心：注入中间件到 Vite 开发服务器
     async configureServer(server: ViteDevServer) {
       // 1. 启动时加载 mocks
-      await loadMocks(resolvedMockDir);
+      await loadMocks(resolvedMockDir, fileSuffix);
       if (logger) {
         log('Mock files loaded.');
       }
@@ -29,7 +29,7 @@ export function viteMockPlus(options: PluginOptions = {}): Plugin {
           if (logger) {
             log(`Mock file changed: ${path.basename(file)}, reloading...`);
           }
-          await loadMocks(resolvedMockDir);
+          await loadMocks(resolvedMockDir, fileSuffix);
           if (logger) {
             log('Mocks reloaded successfully.');
           }
@@ -70,4 +70,4 @@ export function viteMockPlus(options: PluginOptions = {}): Plugin {
   };
 }
 
-export default viteMockPlus;
+export default viteMockPro;

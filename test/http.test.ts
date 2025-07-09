@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import connect from 'connect';
-import { viteMockPlus } from '../src';
+import { viteMockPro } from '../src';
 import path from 'path';
 
 describe('HTTP Mocking', () => {
   const app = connect();
 
   beforeAll(async () => {
-    const plugin = viteMockPlus({
+    const plugin = viteMockPro({
       mockDir: path.join(__dirname, 'mocks'),
       logger: false,
     });
