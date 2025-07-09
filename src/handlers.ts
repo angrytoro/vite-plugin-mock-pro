@@ -62,7 +62,9 @@ export function handleSseRequest(
     sendSseMessage(res, event, data);
   };
   
-  stream.generator(send);
+  stream.generator(send, () => {
+    res.end();
+  });
 
   // 当客户端关闭连接时，清理资源
   req.on('close', () => {

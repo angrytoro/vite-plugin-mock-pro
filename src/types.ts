@@ -9,7 +9,7 @@ export interface MockSseStreamOptions {
    * 你需要自己管理何时关闭流（例如通过 clearInterval）。
    * @param send - 用于发送消息的函数 `(eventName, data) => void`
    */
-  generator: (send: SseSender) => void;
+  generator: (send: SseSender, close: () => void) => void;
 }
 
 /** HTTP Mock 配置项 */
