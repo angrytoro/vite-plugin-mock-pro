@@ -1,13 +1,13 @@
-# vite-plugin-mock-plus
+# vite-plugin-mock-pro
 
-[![npm version](https://img.shields.io/npm/v/vite-plugin-mock-plus.svg)](https://www.npmjs.com/package/vite-plugin-mock-plus)
-[![license](https://img.shields.io/npm/l/vite-plugin-mock-plus.svg)](https://github.com/<your-username>/vite-plugin-mock-plus/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/vite-plugin-mock-pro.svg)](https://www.npmjs.com/package/vite-plugin-mock-pro)
+[![license](https://img.shields.io/npm/l/vite-plugin-mock-pro.svg)](https://github.com/<your-username>/vite-plugin-mock-pro/blob/main/LICENSE)
 
 A powerful and lightweight Mock API plugin for Vite. Supports Hot Module Replacement (HMR), written in TypeScript, and provides complete type definitions.
 
 [简体中文](./README.md) | **English**
 
-`vite-plugin-mock-plus` allows you to separate API mock configurations into individual files, making it easy to simulate backend APIs during development without a real backend service. When your mock files change, all updates are applied instantly without restarting the Vite dev server.
+`vite-plugin-mock-pro` allows you to separate API mock configurations into individual files, making it easy to simulate backend APIs during development without a real backend service. When your mock files change, all updates are applied instantly without restarting the Vite dev server.
 
 ## ✨ Features
 
@@ -25,13 +25,13 @@ Use your favorite package manager:
 
 ```bash
 # npm
-npm install vite-plugin-mock-plus --save-dev
+npm install vite-plugin-mock-pro --save-dev
 
 # yarn
-yarn add vite-plugin-mock-plus --dev
+yarn add vite-plugin-mock-pro --dev
 
 # pnpm
-pnpm add vite-plugin-mock-plus -D
+pnpm add vite-plugin-mock-pro -D
 ```
 
 ## 🚀 Usage
@@ -44,7 +44,7 @@ In your `vite.config.ts`, import and use `viteMockPlus()`.
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react'; // Example: React
-import { viteMockPlus } from 'vite-plugin-mock-plus';
+import { viteMockPlus } from 'vite-plugin-mock-pro';
 
 export default defineConfig({
   plugins: [
@@ -65,7 +65,7 @@ Each mock file should `export default` an object. The object's key is the API pa
 
 ```typescript
 // mock/user.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-plus';
+import type { MockConfig } from 'vite-plugin-mock-pro';
 
 const userMock: MockConfig = {
   // Match /api/user endpoint
@@ -120,13 +120,13 @@ When you visit `http://localhost:5173/api/user`, you'll get the mock response de
 
 ### 📈 Advanced: Mocking Server-Sent Events (SSE)
 
-`vite-plugin-mock-plus` supports dedicated SSE config for simulating long-lived connections (e.g., real-time push, progress). In your mock file, set `method: 'SSE'` for a path and use `stream.generator(send, close)` to send events and manage connection closure.
+`vite-plugin-mock-pro` supports dedicated SSE config for simulating long-lived connections (e.g., real-time push, progress). In your mock file, set `method: 'SSE'` for a path and use `stream.generator(send, close)` to send events and manage connection closure.
 
 **Example: Create an SSE Mock File**
 
 ```typescript
 // mock/sse.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-plus';
+import type { MockConfig } from 'vite-plugin-mock-pro';
 
 const sseMock: MockConfig = {
   '/api/sse/stream': {
@@ -223,7 +223,7 @@ The plugin provides several options for customization.
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
-import { viteMockPlus } from 'vite-plugin-mock-plus';
+import { viteMockPlus } from 'vite-plugin-mock-pro';
 
 export default defineConfig(({ command }) => {
   return {

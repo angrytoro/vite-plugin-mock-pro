@@ -1,13 +1,13 @@
-# vite-plugin-mock-plus
+# vite-plugin-mock-pro
 
-[![npm version](https://img.shields.io/npm/v/vite-plugin-mock-plus.svg)](https://www.npmjs.com/package/vite-plugin-mock-plus)
-[![license](https://img.shields.io/npm/l/vite-plugin-mock-plus.svg)](https://github.com/<你的用户名>/vite-plugin-mock-plus/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/vite-plugin-mock-pro.svg)](https://www.npmjs.com/package/vite-plugin-mock-pro)
+[![license](https://img.shields.io/npm/l/vite-plugin-mock-pro.svg)](https://github.com/<你的用户名>/vite-plugin-mock-pro/blob/main/LICENSE)
 
 一个为 Vite 打造的、功能强大且轻量级的 Mock API 插件。支持热模块更新 (HMR)，用 TypeScript 编写，并提供完整的类型定义。
 
 [English](./README.en.md) | **简体中文**
 
-`vite-plugin-mock-plus` 让你能够将 API Mock 配置分离到单独的文件中，在开发过程中轻松模拟后端接口，而无需真实的后端服务。当你的 mock 文件发生变化时，所有更新都会被即时应用，无需重启 Vite 开发服务器。
+`vite-plugin-mock-pro` 让你能够将 API Mock 配置分离到单独的文件中，在开发过程中轻松模拟后端接口，而无需真实的后端服务。当你的 mock 文件发生变化时，所有更新都会被即时应用，无需重启 Vite 开发服务器。
 
 ## ✨ 特性
 
@@ -25,13 +25,13 @@
 
 ```bash
 # npm
-npm install vite-plugin-mock-plus --save-dev
+npm install vite-plugin-mock-pro --save-dev
 
 # yarn
-yarn add vite-plugin-mock-plus --dev
+yarn add vite-plugin-mock-pro --dev
 
 # pnpm
-pnpm add vite-plugin-mock-plus -D
+pnpm add vite-plugin-mock-pro -D
 ```
 
 ## 🚀 使用方法
@@ -44,7 +44,7 @@ pnpm add vite-plugin-mock-plus -D
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react'; // 以 React 为例
-import { viteMockPlus } from 'vite-plugin-mock-plus';
+import { viteMockPlus } from 'vite-plugin-mock-pro';
 
 export default defineConfig({
   plugins: [
@@ -65,7 +65,7 @@ export default defineConfig({
 
 ```typescript
 // mock/user.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-plus';
+import type { MockConfig } from 'vite-plugin-mock-pro';
 
 const userMock: MockConfig = {
   // 匹配 /api/user 接口
@@ -120,13 +120,13 @@ npm run dev
 
 ### 📈 高级用法：模拟 Server-Sent Events (SSE)
 
-`vite-plugin-mock-plus` 支持通过专用的 SSE 配置模拟长连接（如实时推送、进度等）。你可以在 mock 文件中为某个路径配置 `method: 'SSE'`，并通过 `stream.generator(send, close)` 发送事件和管理连接关闭。
+`vite-plugin-mock-pro` 支持通过专用的 SSE 配置模拟长连接（如实时推送、进度等）。你可以在 mock 文件中为某个路径配置 `method: 'SSE'`，并通过 `stream.generator(send, close)` 发送事件和管理连接关闭。
 
 **示例：创建 SSE Mock 文件**
 
 ```typescript
 // mock/sse.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-plus';
+import type { MockConfig } from 'vite-plugin-mock-pro';
 
 const sseMock: MockConfig = {
   '/api/sse/stream': {
@@ -223,7 +223,7 @@ function RealTimeLogger() {
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
-import { viteMockPlus } from 'vite-plugin-mock-plus';
+import { viteMockPlus } from 'vite-plugin-mock-pro';
 
 export default defineConfig(({ command }) => {
   return {

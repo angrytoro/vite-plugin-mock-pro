@@ -1,11 +1,13 @@
 {
-  "name": "vite-plugin-mock-plus",
-  "version": "1.0.0",
+  "name": "vite-plugin-mock-pro",
+  "version": "0.1.0",
   "type": "module",
   "description": "一个为 Vite 打造的、功能强大且轻量级的 Mock API 插件。支持热模块更新 (HMR)，用 TypeScript 编写，并提供完整的类型定义。",
   "author": {
     "name": "angryoro"
   },
+  "module": "dist/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "vitest run --coverage",
@@ -18,6 +20,10 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "devDependencies": {
     "@types/eventsource": "^1.1.15",
     "@types/node": "^20.10.4",
