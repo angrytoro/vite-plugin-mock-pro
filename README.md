@@ -120,58 +120,52 @@ npm run dev
 
 ### 📈 高级用法：模拟 Server-Sent Events (SSE)
 
-`vite-plugin-mock-plus` 不仅支持一次性的请求/响应，还允许你模拟长连接，例如 Server-Sent Events (SSE)，这对于测试实时通知、进度更新等功能非常有用。
-
-实现这一点的关键在于：**在 `response` 函数中直接操作响应对象 (`res`)，并且不返回任何值。** 当你的 `response` 函数没有返回值 (`undefined`) 时，插件会认为你已经接管了响应处理，从而不会自动关闭连接。
+`vite-plugin-mock-plus` 支持通过专用的 SSE 配置模拟长连接（如实时推送、进度等）。你可以在 mock 文件中为某个路径配置 `method: 'SSE'`，并通过 `stream.generator(send, close)` 发送事件和管理连接关闭。
 
 **示例：创建 SSE Mock 文件**
-
-下面是一个模拟实时日志推送的例子：
 
 ```typescript
 // mock/sse.mock.ts
 import type { MockConfig } from 'vite-plugin-mock-plus';
 
-let id = 0;
 const sseMock: MockConfig = {
   '/api/sse/stream': {
-    method: 'GET',
-    response: (req, res) => {
-      // 1. 设置 SSE 所需的响应头
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
-      res.flushHeaders(); // 立即发送响应头
-
-      console.log('SSE client connected for /api/sse/stream');
-
-      // 2. 创建一个定时器，定期向客户端发送消息
-      const interval = setInterval(() => {
-        const message = {
-          id: id++,
-          timestamp: new Date().toISOString(),
-          log: `This is a log message from the mock server.`,
-        };
-
-        // 3. 必须遵循 SSE 的格式: "data: <json-string>\n\n"
-        res.write(`data: ${JSON.stringify(message)}\n\n`);
-      }, 2000); // 每 2 秒发送一次
-
-      // 4. 当客户端断开连接时，清除定时器以释放资源
-      req.on('close', () => {
-        console.log('SSE client disconnected.');
-        clearInterval(interval);
-        res.end(); // 确保连接被正确关闭
-      });
-
-      // 5. 注意：不要从此函数返回任何值！
-      // 返回 undefined 会让插件知道你要自己管理连接。
-    },
+    method: 'SSE',
+    stream: {
+      generator(send, close) {
+        let count = 0;
+        const timer = setInterval(() => {
+          send('message', { count });
+          count++;
+          if (count > 5) {
+            clearInterval(timer);
+            close(); // 主动关闭 SSE 连接
+          }
+        }, 1000);
+      }
+    }
   },
+  '/api/sse/custom': {
+    method: 'SSE',
+    stream: {
+      generator(send, close) {
+        send('custom-event', { foo: 1 });
+        setTimeout(() => {
+          send('custom-event', { foo: 2 });
+          close();
+        }, 500);
+      }
+    }
+  }
 };
 
 export default sseMock;
 ```
+
+**说明：**
+- `send(eventName, data)` 用于发送自定义事件和数据。
+- `close()` 用于主动关闭 SSE 连接（如定时器结束、业务完成等）。
+- 你无需手动设置响应头或监听 `req.on('close')`，插件会自动处理。
 
 **在前端消费 SSE 数据**
 
@@ -187,11 +181,16 @@ function RealTimeLogger() {
     const eventSource = new EventSource('/api/sse/stream');
 
     // 监听 message 事件
-    eventSource.onmessage = (event) => {
+    eventSource.addEventListener('message', (event) => {
       const data = JSON.parse(event.data);
       console.log('Received SSE data:', data);
-      // 在这里更新你的组件状态，例如将日志显示在页面上
-    };
+    });
+
+    // 监听自定义事件
+    eventSource.addEventListener('custom-event', (event) => {
+      const data = JSON.parse(event.data);
+      console.log('Received custom event:', data);
+    });
 
     // 监听错误事件
     eventSource.onerror = (err) => {

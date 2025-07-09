@@ -24,7 +24,7 @@ export function viteMockPlus(options: PluginOptions = {}): Plugin {
 
       // 2. 设置 HMR (热更新)
       server.watcher.add(resolvedMockDir); // resolvedMockDir 已为 string
-      server.watcher.on('all', async (event, file) => {
+      server.watcher.on('all', async (_event, file) => {
         if (file && file.startsWith(resolvedMockDir)) {
           if (logger) {
             log(`Mock file changed: ${path.basename(file)}, reloading...`);
