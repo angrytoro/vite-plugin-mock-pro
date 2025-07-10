@@ -30,7 +30,7 @@ export async function handleHttpRequest(
   const body = await parseBody(req);
   const query = Object.fromEntries(new URLSearchParams(req.url?.split('?')[1] || ''));
   
-  const responseData = response({ query, body, params: {} }); // params can be added with more complex routing
+  const responseData = typeof response === 'function' ? response({ query, body, params: {} }) : response; // params can be added with more complex routing
 
   setTimeout(() => {
     res.statusCode = statusCode;

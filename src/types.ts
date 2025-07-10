@@ -19,11 +19,11 @@ export interface MockHttpItem {
    * 响应函数，可以根据请求动态返回结果。
    * @param req - Node.js 的 IncomingMessage 对象
    */
-  response: (req: {
+  response: Record<string, any> | ((req: {
     query: Record<string, any>;
     body: Record<string, any>;
     params: Record<string, string>;
-  }) => any;
+  }) => any);
   statusCode?: number;
   delay?: number; // 毫秒
   headers?: Record<string, string>;
