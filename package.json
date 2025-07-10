@@ -20,6 +20,12 @@
   "files": [
     "dist"
   ],
+  "keywords": [
+    "vite",
+    "mock",
+    "hmr",
+    "sse"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
@@ -36,5 +42,6 @@
     "typescript": "^5.3.3",
     "vite": "^5.2.0",
     "vitest": "^3.2.4"
-  }
+  },
+  "license": "MIT"
 }
