@@ -2,8 +2,8 @@
   "compilerOptions": {
     /* ----- Project Options ----- */
     "target": "ES2022", // 目标代码为 ES2022，Vite 和现代 Node.js 环境都支持
-    "module": "ESNext", // 使用最新的 Node.js ES Module 解析策略，与 "type": "module" 配合
-    "moduleResolution": "bundler", // 同样，使用现代 Node.js 模块解析
+    "module": "nodenext", // 使用最新的 Node.js ES Module 解析策略，与 "type": "module" 配合
+    "moduleResolution": "nodenext", // 同样，使用现代 Node.js 模块解析
     "lib": ["ESNext", "DOM"], // 包含最新的 ES 特性库和 DOM 库（某些 Node API 如 EventSource 会用到）
 
     /* ----- Output ----- */

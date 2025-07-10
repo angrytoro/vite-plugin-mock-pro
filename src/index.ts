@@ -1,9 +1,9 @@
 // src/index.ts
 import type { Plugin, ViteDevServer } from 'vite';
-import type { PluginOptions } from './types';
-import { mockStore, loadMocks } from './loader';
-import { handleHttpRequest, handleSseRequest } from './handlers';
-import { log } from './utils';
+import type { PluginOptions } from './types.js';
+import { mockStore, loadMocks } from './loader.js';
+import { handleHttpRequest, handleSseRequest } from './handlers.js';
+import { log } from './utils.js';
 import path from 'path';
 import type { IncomingMessage, ServerResponse } from 'http';
 

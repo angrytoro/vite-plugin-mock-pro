@@ -1,7 +1,7 @@
 // src/handlers.ts
 import type { IncomingMessage, ServerResponse } from 'http';
-import type { MockHttpItem, MockSseItem } from './types';
-import { sendSseMessage } from './utils';
+import type { MockHttpItem, MockSseItem } from './types.js';
+import { sendSseMessage } from './utils.js';
 import { URLSearchParams } from 'url';
 
 // 辅助函数：解析请求体

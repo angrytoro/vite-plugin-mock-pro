@@ -1,13 +1,13 @@
 // src/loader.ts
-import { glob } from 'fast-glob';
-import type { MockConfig, MockItem } from './types';
+import fg from 'fast-glob';
+import type { MockConfig, MockItem } from './types.js';
 
 // 使用 Map 存储，方便快速查找和更新
 export const mockStore = new Map<string, MockItem>();
 
 export async function loadMocks(mockDir: string, fileSuffix: string = '.mock'): Promise<void> {
   mockStore.clear();
-  const mockFiles = await glob(`${mockDir}/**/*${fileSuffix}.{ts,js,json}`, {
+  const mockFiles = await fg(`${mockDir}/**/*${fileSuffix}.{js,json}`, {
     ignore: ['**/node_modules/**'],
     absolute: true,
   });
