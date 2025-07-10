@@ -1,6 +1,6 @@
 // src/handlers.ts
 import type { IncomingMessage, ServerResponse } from 'http';
-import type { MockHttpItem, MockSseItem } from './types.js';
+import type { MockHttpItem, MockSseItem, MockRequest } from './types.js';
 import { sendSseMessage } from './utils.js';
 import { URLSearchParams } from 'url';
 
@@ -29,8 +29,10 @@ export async function handleHttpRequest(
 
   const body = await parseBody(req);
   const query = Object.fromEntries(new URLSearchParams(req.url?.split('?')[1] || ''));
-  
-  const responseData = typeof response === 'function' ? response({ query, body, params: {} }) : response; // params can be added with more complex routing
+  const mockRequest: MockRequest = { query, body, params: {} };
+
+  const responseData =
+    typeof response === 'function' ? response(mockRequest) : response;
 
   setTimeout(() => {
     res.statusCode = statusCode;
@@ -45,10 +47,10 @@ export async function handleHttpRequest(
 }
 
 // 处理 SSE 请求
-export function handleSseRequest(
+export async function handleSseRequest(
   item: MockSseItem,
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
 ) {
   const { stream } = item;
 
@@ -61,13 +63,19 @@ export function handleSseRequest(
   const send = (event: string, data: any) => {
     sendSseMessage(res, event, data);
   };
-  
-  stream.generator(send, () => {
-    res.end();
-  });
 
-  // 当客户端关闭连接时，清理资源
+  const body = await parseBody(req);
+  const query = Object.fromEntries(
+    new URLSearchParams(req.url?.split('?')[1] || ''),
+  );
+  const mockRequest: MockRequest = { query, body, params: {} };
+
+  stream.generator(send, mockRequest, res);
+
+  // 当客户端关闭连接时, 确保连接被正确关闭
   req.on('close', () => {
-    res.end();
+    if (!res.writableEnded) {
+      res.end();
+    }
   });
 }

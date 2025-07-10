@@ -37,10 +37,10 @@ export function viteMockPro(options: PluginOptions = {}): Plugin {
       });
       
       // 3. 中间件逻辑
-      const middleware = (
+      const middleware = async (
         req: IncomingMessage & { url?: string; method?: string },
         res: ServerResponse,
-        next: () => void
+        next: (err?: any) => void
       ) => {
         const url = req.url?.split('?')[0];
         if (!url) return next();
@@ -50,18 +50,23 @@ export function viteMockPro(options: PluginOptions = {}): Plugin {
 
         const reqMethod = req.method?.toUpperCase();
 
-        if (mockItem.method === 'SSE' && reqMethod === 'GET') {
-          if (logger) log(`[SSE] Matched: ${url}`);
-          handleSseRequest(mockItem, req, res);
-        } else if (
-          mockItem.method !== 'SSE' &&
-          (mockItem.method === reqMethod || !mockItem.method) // 如果没指定 method，则匹配所有 HTTP 方法
-        ) {
-          if (logger) log(`[HTTP] Matched: ${reqMethod} ${url}`);
-          handleHttpRequest(mockItem, req, res);
-        } else {
-          // 方法不匹配
-          return next();
+        try {
+          if (mockItem.method === 'SSE' && reqMethod === 'GET') {
+            if (logger) log(`[SSE] Matched: ${url}`);
+            await handleSseRequest(mockItem, req, res);
+          } else if (
+            mockItem.method !== 'SSE' &&
+            (mockItem.method === reqMethod || !mockItem.method) // 如果没指定 method，则匹配所有 HTTP 方法
+          ) {
+            if (logger) log(`[HTTP] Matched: ${reqMethod} ${url}`);
+            await handleHttpRequest(mockItem, req, res);
+          } else {
+            // 方法不匹配
+            return next();
+          }
+        } catch (err) {
+          // 将错误传递给下一个中间件
+          next(err);
         }
       };
 

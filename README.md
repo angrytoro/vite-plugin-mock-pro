@@ -120,7 +120,7 @@ npm run dev
 
 ### 📈 高级用法：模拟 Server-Sent Events (SSE)
 
-`vite-plugin-mock-pro` 支持通过专用的 SSE 配置模拟长连接（如实时推送、进度等）。你可以在 mock 文件中为某个路径配置 `method: 'SSE'`，并通过 `stream.generator(send, close)` 发送事件和管理连接关闭。
+`vite-plugin-mock-pro` 支持通过专用的 SSE 配置模拟长连接（如实时推送、进度等）。你可以在 mock 文件中为某个路径配置 `method: 'SSE'`，并通过 `stream.generator(send, req, res)` 发送事件和管理连接关闭。
 
 **示例：创建 SSE Mock 文件**
 
@@ -132,14 +132,14 @@ const sseMock = {
   '/api/sse/stream': {
     method: 'SSE',
     stream: {
-      generator(send, close) {
+      generator(send, req, res) {
         let count = 0;
         const timer = setInterval(() => {
           send('message', { count });
           count++;
           if (count > 5) {
             clearInterval(timer);
-            close(); // 主动关闭 SSE 连接
+            res.end(); // 主动关闭 SSE 连接
           }
         }, 1000);
       }
@@ -148,11 +148,11 @@ const sseMock = {
   '/api/sse/custom': {
     method: 'SSE',
     stream: {
-      generator(send, close) {
+      generator(send, req, res) {
         send('custom-event', { foo: 1 });
         setTimeout(() => {
           send('custom-event', { foo: 2 });
-          close();
+          res.end();
         }, 500);
       }
     }

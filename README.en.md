@@ -122,7 +122,7 @@ When you visit `http://localhost:5173/api/user`, you'll get the mock response de
 
 ### 📈 Advanced: Mocking Server-Sent Events (SSE)
 
-`vite-plugin-mock-pro` supports dedicated SSE config for simulating long-lived connections (e.g., real-time push, progress). In your mock file, set `method: 'SSE'` for a path and use `stream.generator(send, close)` to send events and manage connection closure.
+`vite-plugin-mock-pro` supports dedicated SSE config for simulating long-lived connections (e.g., real-time push, progress). In your mock file, set `method: 'SSE'` for a path and use `stream.generator(send, req, res)` to send events and manage connection closure.
 
 **Example: Create an SSE Mock File**
 
@@ -134,14 +134,14 @@ const sseMock = {
   '/api/sse/stream': {
     method: 'SSE',
     stream: {
-      generator(send, close) {
+      generator(send, req, res) {
         let count = 0;
         const timer = setInterval(() => {
           send('message', { count });
           count++;
           if (count > 5) {
             clearInterval(timer);
-            close(); // Actively close the SSE connection
+            res.end(); // Actively close the SSE connection
           }
         }, 1000);
       }
@@ -150,11 +150,11 @@ const sseMock = {
   '/api/sse/custom': {
     method: 'SSE',
     stream: {
-      generator(send, close) {
+      generator(send, req, res) {
         send('custom-event', { foo: 1 });
         setTimeout(() => {
           send('custom-event', { foo: 2 });
-          close();
+          res.end();
         }, 500);
       }
     }
