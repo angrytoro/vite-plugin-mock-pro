@@ -1,0 +1,6 @@
+{
+  "/api/test/posts-json": {
+    "method": "GET",
+    "response": [{ "id": 2, "title": "Post 2" }]
+  }
+}

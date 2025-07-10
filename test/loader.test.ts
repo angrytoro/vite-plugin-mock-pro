@@ -3,6 +3,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import path from 'path';
 import { loadMocks, mockStore } from '../src/loader'; // 引入要测试的函数和存储实例
+import type { MockHttpItem } from '../src/types'; // 引入 MockItem 类型以便进行类型断言
 
 describe('Mock Loader', () => {
 
@@ -21,7 +22,7 @@ describe('Mock Loader', () => {
     await loadMocks(singleFileDir);
 
     // 3. 断言结果
-    expect(mockStore.size).toBe(2); // 确认加载了两个 mock 配置
+    expect(mockStore.size).toBe(3); // 确认加载了3个 mock 配置
     expect(mockStore.has('/api/test/user')).toBe(true);
     expect(mockStore.has('/api/test/settings')).toBe(true);
 
@@ -38,7 +39,7 @@ describe('Mock Loader', () => {
     await loadMocks(multipleFilesDir);
 
     // 3. 断言结果
-    expect(mockStore.size).toBe(2); // 确认合并了两个文件的配置
+    expect(mockStore.size).toBe(4); // 确认合并了两个文件的配置
     expect(mockStore.has('/api/test/profile')).toBe(true); // 来自 profile.mock.ts
     expect(mockStore.has('/api/test/posts')).toBe(true);   // 来自 posts.mock.ts
   });
@@ -55,7 +56,7 @@ describe('Mock Loader', () => {
 
     // 验证第一次加载成功
     expect(mockStore.has('/api/test/user')).toBe(true);
-    expect(mockStore.size).toBe(2);
+    expect(mockStore.size).toBe(3);
 
     // 第二次加载（模拟热更新）
     const reloadDir = path.resolve(__dirname, 'mocks/loader-reload');
@@ -66,6 +67,34 @@ describe('Mock Loader', () => {
     expect(mockStore.has('/api/test/status')).toBe(true); // 新的 mock 存在
     expect(mockStore.has('/api/test/user')).toBe(false); // 旧的 mock 已经被清除
     expect(mockStore.has('/api/test/settings')).toBe(false); // 旧的 mock 已经被清除
+  });
+
+  it('should load mocks from a single JSON file correctly', async () => {
+    expect(mockStore.size).toBe(0);
+
+    const singleFileDir = path.resolve(__dirname, 'mocks/loader-single');
+    await loadMocks(singleFileDir);
+
+    expect(mockStore.has('/api/test/user-json')).toBe(true);
+    const userJsonMock = mockStore.get('/api/test/user-json');
+    expect(userJsonMock?.method).toBe('GET');
+    expect((userJsonMock as MockHttpItem)?.response).toEqual({ id: 2, name: 'Single User JSON' });
+  });
+
+  it('should load and merge mocks from multiple JSON files', async () => {
+    expect(mockStore.size).toBe(0);
+
+    const multipleFilesDir = path.resolve(__dirname, 'mocks/loader-multiple');
+    await loadMocks(multipleFilesDir);
+
+    expect(mockStore.has('/api/test/profile-json')).toBe(true);
+    expect(mockStore.has('/api/test/posts-json')).toBe(true);
+
+    const profileJsonMock = mockStore.get('/api/test/profile-json');
+    expect((profileJsonMock as MockHttpItem)?.response).toEqual({ role: 'user' });
+
+    const postsJsonMock = mockStore.get('/api/test/posts-json');
+    expect((postsJsonMock as MockHttpItem)?.response).toEqual([{ id: 2, title: 'Post 2' }]);
   });
 
   // 快照测试（可选，但推荐）

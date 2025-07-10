@@ -1,0 +1,6 @@
+{
+  "/api/test/user-json": {
+    "method": "GET",
+    "response": { "id": 2, "name": "Single User JSON" }
+  }
+}

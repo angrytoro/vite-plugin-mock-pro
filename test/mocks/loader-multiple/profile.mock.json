@@ -1,0 +1,6 @@
+{
+  "/api/test/profile-json": {
+    "method": "GET",
+    "response": { "role": "user" }
+  }
+}
