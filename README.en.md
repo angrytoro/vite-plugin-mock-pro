@@ -59,15 +59,17 @@ export default defineConfig({
 
 ### Step 2: Create Mock Files
 
-Create a `mock` folder in your project root (or any directory you specify in the config). Then create your mock files inside, e.g., `user.mock.ts`.
+Create a `mock` folder in your project root (or any directory you specify in the config). Then create your mock files inside, e.g., `user.mock.js`.
+
+> **Note:** Mock files must use the `.js` extension.
 
 Each mock file should `export default` an object. The object's key is the API path, and the value is the config for that endpoint.
 
-```typescript
-// mock/user.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-pro';
+```javascript
+// mock/user.mock.js
+// Note: mock files must use .js extension
 
-const userMock: MockConfig = {
+const userMock = {
   // Match /api/user endpoint
   '/api/user': {
     // HTTP method
@@ -124,11 +126,11 @@ When you visit `http://localhost:5173/api/user`, you'll get the mock response de
 
 **Example: Create an SSE Mock File**
 
-```typescript
-// mock/sse.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-pro';
+```javascript
+// mock/sse.mock.js
+// Note: mock files must use .js extension
 
-const sseMock: MockConfig = {
+const sseMock = {
   '/api/sse/stream': {
     method: 'SSE',
     stream: {
@@ -215,7 +217,7 @@ The plugin provides several options for customization.
 | Option        | Type      | Default     | Description                                                                 |
 | :------------ | :-------- | :---------- | :-------------------------------------------------------------------------- |
 | `mockDir`     | `string`  | `'mock'`    | Directory for mock config files, relative to project root.                  |
-| `fileSuffix`  | `string`  | `'.mock'`   | Suffix for mock files. The plugin loads all files ending with this suffix.  |
+| `fileSuffix`  | `string`  | `'.mock'`   | Suffix for mock files. The plugin loads all files ending with `[fileSuffix].js` (TypeScript `.ts` is not supported).  |
 
 **Example: Disable Mock in Production**
 

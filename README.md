@@ -59,15 +59,15 @@ export default defineConfig({
 
 ### 步骤 2: 创建 Mock 文件
 
-在你的项目根目录下，创建一个 `mock` 文件夹（或你在配置中指定的任何名称）。然后，在其中创建你的 mock 文件，例如 `user.mock.ts`。
+在你的项目根目录下，创建一个 `mock` 文件夹（或你在配置中指定的任何名称）。然后，在其中创建你的 mock 文件，例如 `user.mock.js`。
 
 每一个 mock 文件都应该 `export default` 一个对象，对象的 `key` 是你要 mock 的 API 路径，`value` 则是该接口的配置。
 
-```typescript
-// mock/user.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-pro';
+```javascript
+// mock/user.mock.js
+// 注意：mock 文件需为 .js 结尾
 
-const userMock: MockConfig = {
+const userMock = {
   // 匹配 /api/user 接口
   '/api/user': {
     // 请求方法为 GET
@@ -124,11 +124,11 @@ npm run dev
 
 **示例：创建 SSE Mock 文件**
 
-```typescript
-// mock/sse.mock.ts
-import type { MockConfig } from 'vite-plugin-mock-pro';
+```javascript
+// mock/sse.mock.js
+// 注意：mock 文件需为 .js 结尾
 
-const sseMock: MockConfig = {
+const sseMock = {
   '/api/sse/stream': {
     method: 'SSE',
     stream: {
@@ -215,7 +215,7 @@ function RealTimeLogger() {
 | 选项      | 类型      | 默认值       | 描述                                                               |
 | :-------- | :-------- | :----------- | :----------------------------------------------------------------- |
 | `mockDir` | `string`  | `'mock'`     | 存放 mock 配置文件的目录路径，相对于项目根目录。                   |
-| `fileSuffix` | `string`  | `'.mock'`    | mock文件的后缀名，插件会查找并加载所有以 `[fileSuffix].ts` 或 `[fileSuffix].js` 结尾的文件。 |
+| `fileSuffix` | `string`  | `'.mock'`    | mock文件的后缀名，插件会查找并加载所有以 `[fileSuffix].js` 结尾的文件（不支持 .ts）。 |
 
 **示例：在生产构建中禁用 Mock**
 
