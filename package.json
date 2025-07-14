@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-mock-pro",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "一个为 Vite 打造的、功能强大且轻量级的 Mock API 插件。支持热模块更新 (HMR)，用 TypeScript 编写，并提供完整的类型定义。",
   "author": {
